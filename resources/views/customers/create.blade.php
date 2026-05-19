@@ -1,127 +1,98 @@
 @extends('layout.master')
+
 @section('style')
 <style>
-    .form-control {
-        padding: 0.375rem 0.75rem;
-        border-radius: 0.375rem;
-    }
-
-    label {
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        display: block;
-    }
-
-    .form-group {
-        margin-bottom: 1.25rem;
-    }
-
-    h2 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #343a40;
-        margin-bottom: 1.5rem;
-        border-bottom: 2px solid #dee2e6;
-        padding-bottom: 0.5rem;
-    }
-
-   
-    button.btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        font-weight: 600;
-        padding: 0.5rem 1.25rem;
-        width: 100%;
-    }
-
-    button.btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #004ea1;
-    }
-</style
+    .page-title h1 { font-size: 28px; font-weight: 800; color: #111827; margin: 0; }
+    .page-title p { color: #6b7280; margin: 6px 0 0; font-size: 14px; }
+    .form-card { border: 0; border-radius: 24px; box-shadow: 0 18px 45px rgba(15, 23, 42, .08); overflow: hidden; }
+    .form-card-header { padding: 22px 26px; border-bottom: 1px solid #eef2f7; background: linear-gradient(135deg, #f8f7ff, #fff); }
+    .form-card-header h5 { font-weight: 800; margin: 0; color: #111827; }
+    .form-card-body { padding: 26px; }
+    .form-label { font-weight: 800; color: #374151; font-size: 14px; }
+    .form-control { border-radius: 14px; border: 1px solid #dde3ee; min-height: 48px; padding: 10px 14px; }
+    .form-control:focus { border-color: #7c3aed; box-shadow: 0 0 0 4px rgba(124,58,237,.12); }
+    .btn-gradient { border: 0; border-radius: 14px; padding: 12px 22px; font-weight: 800; color: #fff; background: linear-gradient(135deg,#7c3aed,#ec4899); box-shadow: 0 14px 28px rgba(124,58,237,.24); }
+    .btn-gradient:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 18px 34px rgba(124,58,237,.32); }
+    .btn-light-soft { border-radius: 14px; padding: 12px 18px; font-weight: 800; background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+    .required { color: #ef4444; }
+</style>
 @endsection
+
 @section('content')
-    <div class="container mt-5">
-        <h2>Add New Customer</h2>
-       
-
-        <form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="full_name">Full Name <span class="text-danger">*</span></label>
-                <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror"
-                    id="full_name" value="{{ old('full_name') }}" required>
-                @error('full_name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone <span class="text-danger">*</span></label>
-                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror"
-                    id="phone" value="{{ old('phone') }}">
-                @error('phone')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            
-            <div class="form-group">
-                <label for="father_name">Father's Name</label>
-                <input type="text" name="father_name" class="form-control @error('father_name') is-invalid @enderror"
-                    id="father_name" value="{{ old('father_name') }}">
-                @error('father_name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="age">Age</label>
-                <input type="number" name="age" class="form-control @error('age') is-invalid @enderror"
-                    id="age" value="{{ old('age') }}">
-                @error('age')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
-                    id="address" value="{{ old('address') }}">
-                @error('address')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                    id="email" value="{{ old('email') }}">
-                @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="image">Image</label>
-                <input type="file" name="image" class="form-control-file @error('image') is-invalid @enderror"
-                    id="image">
-                @error('image')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+        <div class="page-title">
+            <h1>Add Customer</h1>
+            <p>Create a new customer profile with contact and identity information.</p>
+        </div>
+        <a href="{{ route('customers.index') }}" class="btn btn-light-soft">
+            <i class="fa fa-arrow-left me-1"></i> Back
+        </a>
     </div>
+
+    <div class="card form-card">
+        <div class="form-card-header">
+            <h5>Customer Information</h5>
+        </div>
+        <div class="form-card-body">
+            <form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="full_name" class="form-label">Full Name <span class="required">*</span></label>
+                        <input type="text" name="full_name" id="full_name" class="form-control @error('full_name') is-invalid @enderror" value="{{ old('full_name') }}" placeholder="Enter full name" required>
+                        @error('full_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone <span class="required">*</span></label>
+                        <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" placeholder="Enter phone number">
+                        @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="father_name" class="form-label">Father's Name</label>
+                        <input type="text" name="father_name" id="father_name" class="form-control @error('father_name') is-invalid @enderror" value="{{ old('father_name') }}" placeholder="Enter father's name">
+                        @error('father_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" name="age" id="age" class="form-control @error('age') is-invalid @enderror" value="{{ old('age') }}" placeholder="Enter age">
+                        @error('age') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Enter email address">
+                        @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                        @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-12">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" name="address" id="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}" placeholder="Enter address">
+                        @error('address') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="{{ route('customers.index') }}" class="btn btn-light-soft">Cancel</a>
+                    <button type="submit" class="btn btn-gradient">
+                        <i class="fa fa-save me-1"></i> Save Customer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
+
 @section('script')
 @endsection

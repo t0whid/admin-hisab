@@ -16,9 +16,10 @@
     {{-- Font Awesome --}}
     <link href="{{ asset('assets/admin/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
-    {{-- DataTables Bootstrap 5 --}}
+    {{-- DataTables Bootstrap 5 + Buttons --}}
     <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
 
     {{-- Toastr --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
@@ -373,6 +374,56 @@
             box-shadow: 0 0 0 .25rem rgba(124, 58, 237, .12);
         }
 
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 12px;
+            border: 1px solid #dde3ee;
+            padding: 8px 12px;
+            min-height: 40px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus,
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 .25rem rgba(124, 58, 237, .12);
+            outline: 0;
+        }
+
+        .dataTables_wrapper .dt-buttons .btn {
+            border-radius: 12px !important;
+            font-weight: 800;
+            padding: 8px 14px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            color: #334155;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, .06);
+        }
+
+        .dataTables_wrapper .dt-buttons .btn:hover {
+            color: #ffffff;
+            border-color: transparent;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+        }
+
+        .dataTables_wrapper .page-link {
+            border-radius: 10px;
+            margin: 0 2px;
+            border-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .dataTables_wrapper .page-item.active .page-link {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            border-color: transparent;
+        }
+
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            color: #64748b;
+            font-size: 14px;
+        }
+
         #toast-container > div {
             border-radius: 14px;
             box-shadow: 0 18px 45px rgba(16, 24, 40, .16);
@@ -451,11 +502,18 @@
     {{-- Toastr --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    {{-- DataTables Bootstrap 5 --}}
+    {{-- DataTables Bootstrap 5 + Buttons --}}
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -497,6 +555,48 @@
             showMethod: 'fadeIn',
             hideMethod: 'fadeOut'
         };
+    </script>
+
+    <script>
+        $(function () {
+            const $tables = $('.datatable, #datatable-buttons');
+
+            $tables.each(function () {
+                const $table = $(this);
+
+                if ($.fn.DataTable.isDataTable(this)) {
+                    return;
+                }
+
+                $table.DataTable({
+                    responsive: true,
+                    pageLength: 10,
+                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+                    order: [[0, 'asc']],
+                    dom:
+                        "<'row align-items-center g-3 mb-3'<'col-md-6'B><'col-md-6'f>>" +
+                        "<'row'<'col-12'tr>>" +
+                        "<'row align-items-center g-3 mt-3'<'col-md-5'i><'col-md-7'p>>",
+                    buttons: [
+                        { extend: 'copy', className: 'btn btn-sm' },
+                        { extend: 'excel', className: 'btn btn-sm' },
+                        { extend: 'pdf', className: 'btn btn-sm' },
+                        { extend: 'print', className: 'btn btn-sm' }
+                    ],
+                    language: {
+                        search: '',
+                        searchPlaceholder: 'Search records...',
+                        lengthMenu: 'Show _MENU_',
+                        emptyTable: 'No records found',
+                        zeroRecords: 'No matching records found'
+                    },
+                    columnDefs: [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false }
+                    ]
+                });
+            });
+        });
     </script>
 
     {{-- Laravel flash messages --}}
