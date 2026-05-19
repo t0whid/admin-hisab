@@ -1,6 +1,13 @@
 @php
     $currentRoute = Route::currentRouteName();
-    $userImage = $user && !empty($user->image) ? asset($user->image) : asset('assets/backend/images/profile_av.jpg');
+
+    $userImage = $user && !empty($user->image)
+        ? asset($user->image)
+        : asset('assets/backend/images/profile_av.jpg');
+
+    $roleLabel = ($user && (int) ($user->role ?? 0) === 1)
+        ? 'Super Admin'
+        : 'Admin';
 @endphp
 
 <aside class="admin-sidebar" id="adminSidebar">
@@ -11,23 +18,24 @@
             </span>
             <span>
                 <span class="brand-title d-block">Shahjalal Enterprise</span>
-                <span class="brand-subtitle d-block">Admin</span>
+                <span class="brand-subtitle d-block">Admin Panel</span>
             </span>
         </a>
     </div>
 
     <div class="sidebar-user d-flex align-items-center gap-3">
-        <img src="{{ $userImage }}" alt="{{ $user->name ?? 'User' }}" class="user-avatar">
+        <img src="{{ $userImage }}"
+             alt="{{ $user->name ?? 'User' }}"
+             class="user-avatar"
+             onerror="this.src='{{ asset('assets/backend/images/profile_av.jpg') }}'">
+
         <div class="min-w-0">
-            <div class="fw-bold text-white text-truncate">{{ $user->name ?? 'Admin' }}</div>
+            <div class="fw-bold text-white text-truncate">
+                {{ $user->name ?? 'Admin' }}
+            </div>
+
             <div class="small text-white-50">
-                @if (($user->role ?? null) == 1)
-                    Super Admin
-                @elseif (($user->role ?? null) == 2)
-                    Employee
-                @else
-                    Admin User
-                @endif
+                {{ $roleLabel }}
             </div>
         </div>
     </div>
@@ -61,6 +69,7 @@
                        class="{{ $currentRoute === 'customers.index' ? 'active' : '' }}">
                         All Customers
                     </a>
+
                     <a href="{{ route('customers.create') }}"
                        class="{{ $currentRoute === 'customers.create' ? 'active' : '' }}">
                         Create Customer
@@ -70,11 +79,30 @@
         </li>
 
         <li>
-            <a href="{{ route('backup.index') }}"
-               class="sidebar-link {{ str_starts_with($currentRoute ?? '', 'backup.') ? 'active' : '' }}">
-                <i class="fa fa-database"></i>
-                <span>Backup</span>
-            </a>
+            <button class="sidebar-toggle"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#adminsMenu"
+                    aria-expanded="{{ str_starts_with($currentRoute ?? '', 'admins.') ? 'true' : 'false' }}">
+                <i class="fa fa-user-secret"></i>
+                <span class="flex-grow-1">Admins</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+
+            <div class="collapse {{ str_starts_with($currentRoute ?? '', 'admins.') ? 'show' : '' }}"
+                 id="adminsMenu">
+                <div class="sidebar-submenu">
+                    <a href="{{ route('admins.index') }}"
+                       class="{{ $currentRoute === 'admins.index' ? 'active' : '' }}">
+                        All Admins
+                    </a>
+
+                    <a href="{{ route('admins.create') }}"
+                       class="{{ $currentRoute === 'admins.create' ? 'active' : '' }}">
+                        Create Admin
+                    </a>
+                </div>
+            </div>
         </li>
 
         <li>
@@ -84,11 +112,27 @@
                 <span>Reports</span>
             </a>
         </li>
+
+        <li>
+            <a href="{{ route('backup.index') }}"
+               class="sidebar-link {{ str_starts_with($currentRoute ?? '', 'backup.') ? 'active' : '' }}">
+                <i class="fa fa-database"></i>
+                <span>Backup</span>
+            </a>
+        </li>
     </ul>
 
     <div class="sidebar-section-label">Account</div>
 
     <ul class="sidebar-nav">
+        <li>
+            <a href="{{ route('profile.edit') }}"
+               class="sidebar-link {{ str_starts_with($currentRoute ?? '', 'profile.') ? 'active' : '' }}">
+                <i class="fa fa-user"></i>
+                <span>My Profile</span>
+            </a>
+        </li>
+
         <li>
             <a href="{{ route('logout') }}" class="sidebar-link">
                 <i class="fa fa-sign-out"></i>

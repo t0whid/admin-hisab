@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
 
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
@@ -49,4 +50,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/admins', [AdminController::class, 'index'])->name('admins.index');
+    Route::get('/admins/create', [AdminController::class, 'create'])->name('admins.create');
+    Route::post('/admins', [AdminController::class, 'store'])->name('admins.store');
+    Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])->name('admins.edit');
+    Route::put('/admins/{admin}', [AdminController::class, 'update'])->name('admins.update');
+    Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])->name('admins.destroy');
 });
