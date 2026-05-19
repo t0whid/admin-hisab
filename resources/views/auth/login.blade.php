@@ -1,262 +1,305 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <meta name="description" content="Shahjalal Enterprise Login">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Log In | Shahjalal Enterprise</title>
 
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('assets/backend/plugins/bootstrap/css/bootstrap.min.css') }}">
+
+    {{-- Bootstrap 5 --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {{-- Existing theme icons/css if zmdi icon is needed --}}
     <link rel="stylesheet" href="{{ asset('assets/backend/css/style.min.css') }}">
 
     <style>
-        body.theme-blush {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f7f3ff 0%, #eef7ff 45%, #fff7f2 100%);
-            font-family: Arial, sans-serif;
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #ec4899;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border: #dde3ee;
+            --bg-soft: #f8f7ff;
         }
 
-        .authentication {
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(124, 58, 237, 0.14), transparent 34%),
+                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.14), transparent 32%),
+                linear-gradient(135deg, #f8f7ff 0%, #eff6ff 45%, #fff7ed 100%);
+        }
+
+        .login-page {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 30px 0;
-        }
-
-        .login-wrapper {
-            width: 100%;
+            padding: 32px 0;
         }
 
         .login-card {
-            border: none;
-            border-radius: 22px;
+            border: 0;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 20px 55px rgba(30, 41, 59, 0.14);
             background: #ffffff;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.15);
         }
 
-        .login-left {
-            padding: 42px 38px;
+        .login-form-area {
+            padding: 46px 42px;
         }
 
-        .brand-box {
+        .brand-area {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
         }
 
-        .brand-box .logo {
-            width: 76px;
-            height: 76px;
+        .brand-logo {
+            width: 78px;
+            height: 78px;
             object-fit: contain;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
-        .brand-box h4 {
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 6px;
+        .brand-area h4 {
+            color: var(--text-dark);
+            font-weight: 800;
+            margin-bottom: 7px;
         }
 
-        .brand-box p {
-            color: #6b7280;
+        .brand-area p {
+            color: var(--text-muted);
             font-size: 14px;
             margin-bottom: 0;
         }
 
-        .custom-input-group {
-            position: relative;
-            margin-bottom: 18px;
+        .form-label {
+            color: #374151;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
-        .custom-input-group .form-control {
-            height: 50px;
-            border-radius: 12px;
-            border: 1px solid #d9dee8;
-            padding-left: 46px;
-            padding-right: 46px;
-            font-size: 14px;
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap .form-control {
+            height: 52px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
             background: #fbfcff;
+            padding-left: 48px;
+            padding-right: 48px;
+            font-size: 14px;
+            color: var(--text-dark);
             transition: all 0.2s ease;
         }
 
-        .custom-input-group .form-control:focus {
-            border-color: #8b5cf6;
+        .input-wrap .form-control:focus {
+            border-color: var(--primary);
             background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.13);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.13);
         }
 
         .input-icon {
             position: absolute;
-            left: 16px;
+            left: 17px;
             top: 50%;
             transform: translateY(-50%);
-            color: #8b95a5;
-            z-index: 3;
+            color: #94a3b8;
+            z-index: 2;
             font-size: 18px;
         }
 
         .password-toggle {
             position: absolute;
-            right: 14px;
+            right: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #8b95a5;
-            z-index: 4;
+            border: 0;
+            background: transparent;
+            color: #94a3b8;
+            z-index: 3;
+            font-size: 20px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            user-select: none;
+            padding: 0;
+            line-height: 1;
         }
 
-        .login-btn {
-            height: 50px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #7c3aed, #ec4899);
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            box-shadow: 0 12px 24px rgba(124, 58, 237, 0.25);
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .btn-login {
+            height: 52px;
+            border: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            box-shadow: 0 14px 28px rgba(124, 58, 237, 0.26);
             transition: all 0.2s ease;
         }
 
-        .login-btn:hover {
+        .btn-login:hover {
+            color: #ffffff;
             transform: translateY(-1px);
-            box-shadow: 0 16px 30px rgba(124, 58, 237, 0.32);
+            box-shadow: 0 18px 35px rgba(124, 58, 237, 0.34);
         }
 
-        .login-btn:focus {
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22);
+        .btn-login:active {
+            transform: translateY(0);
         }
 
         .side-panel {
+            min-height: 560px;
             height: 100%;
-            min-height: 520px;
-            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 45px;
-            position: relative;
-            overflow: hidden;
+            padding: 48px;
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
         }
 
-        .side-panel:before {
+        .side-panel::before {
             content: "";
             position: absolute;
-            width: 260px;
-            height: 260px;
+            width: 270px;
+            height: 270px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.13);
-            top: -80px;
-            right: -70px;
+            background: rgba(255, 255, 255, 0.14);
+            top: -90px;
+            right: -75px;
         }
 
-        .side-panel:after {
+        .side-panel::after {
             content: "";
             position: absolute;
-            width: 210px;
-            height: 210px;
+            width: 230px;
+            height: 230px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.11);
-            bottom: -70px;
-            left: -60px;
+            background: rgba(255, 255, 255, 0.12);
+            bottom: -80px;
+            left: -75px;
         }
 
         .side-content {
             position: relative;
             z-index: 2;
-            text-align: center;
             color: #ffffff;
+            text-align: center;
         }
 
         .side-content img {
-            max-width: 92%;
-            margin-bottom: 25px;
+            width: 100%;
+            max-width: 430px;
+            margin-bottom: 28px;
         }
 
         .side-content h3 {
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 800;
             margin-bottom: 12px;
         }
 
         .side-content p {
+            max-width: 440px;
+            margin: 0 auto;
             font-size: 15px;
-            line-height: 1.7;
-            opacity: 0.92;
-            margin-bottom: 0;
+            line-height: 1.75;
+            opacity: 0.94;
         }
 
         .copyright {
-            margin-top: 22px;
+            margin-top: 24px;
             font-size: 13px;
-            color: #6b7280;
+            color: var(--text-muted);
+            text-align: center;
         }
 
         .copyright a {
-            color: #7c3aed;
-            font-weight: 600;
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
         }
 
         .alert {
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 14px;
             padding: 12px 14px;
         }
 
-        @media (max-width: 991px) {
-            .side-panel {
-                display: none;
+        @media (max-width: 991.98px) {
+            .login-form-area {
+                padding: 38px 28px;
             }
 
-            .login-left {
-                padding: 34px 24px;
-            }
-
-            .authentication {
-                padding: 18px 0;
+            .login-card {
+                border-radius: 24px;
             }
         }
 
-        @media (max-width: 575px) {
-            .login-card {
-                border-radius: 18px;
+        @media (max-width: 575.98px) {
+            .login-page {
+                padding: 18px 0;
             }
 
-            .brand-box .logo {
-                width: 64px;
-                height: 64px;
+            .login-form-area {
+                padding: 32px 22px;
             }
 
-            .brand-box h4 {
-                font-size: 20px;
+            .brand-logo {
+                width: 66px;
+                height: 66px;
+            }
+
+            .brand-area h4 {
+                font-size: 21px;
             }
         }
     </style>
 </head>
 
-<body class="theme-blush">
+<body>
 
-    <div class="authentication">
-        <div class="container login-wrapper">
+    <main class="login-page">
+        <div class="container">
             <div class="row justify-content-center">
-                <div class="col-xl-10 col-lg-11 col-md-8 col-sm-11">
+                <div class="col-xl-10 col-lg-11 col-md-9 col-sm-11">
 
                     <div class="card login-card">
-                        <div class="row no-gutters">
+                        <div class="row g-0">
 
-                            <div class="col-lg-5 col-md-12">
-                                <div class="login-left">
+                            <div class="col-lg-5">
+                                <div class="login-form-area">
 
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
 
-                                        <div class="brand-box">
-                                            <img class="logo" src="{{ asset('assets/images/logo.svg') }}"
-                                                alt="Logo" onerror="this.style.display='none'">
+                                        <div class="brand-area">
+                                            <img class="brand-logo"
+                                                 src="{{ asset('assets/images/logo.svg') }}"
+                                                 alt="Shahjalal Enterprise"
+                                                 onerror="this.style.display='none'">
 
                                             <h4>Welcome Back</h4>
                                             <p>Sign in to continue to Shahjalal Enterprise</p>
@@ -274,42 +317,65 @@
                                             </div>
                                         @endif
 
-                                        <div class="custom-input-group">
-                                            <span class="input-icon">
-                                                <i class="zmdi zmdi-account-circle"></i>
-                                            </span>
-                                            <input type="text" class="form-control" name="login"
-                                                placeholder="Username or Email" value="{{ old('login') }}" required
-                                                autofocus>
+                                        <div class="mb-3">
+                                            <label for="login" class="form-label">Username or Email</label>
+
+                                            <div class="input-wrap">
+                                                <span class="input-icon">
+                                                    <i class="zmdi zmdi-account-circle"></i>
+                                                </span>
+
+                                                <input type="text"
+                                                       class="form-control"
+                                                       name="login"
+                                                       id="login"
+                                                       placeholder="Enter username or email"
+                                                       value="{{ old('login') }}"
+                                                       required
+                                                       autofocus>
+                                            </div>
                                         </div>
 
-                                        <div class="custom-input-group">
-                                            <span class="input-icon">
-                                                <i class="zmdi zmdi-lock"></i>
-                                            </span>
+                                        <div class="mb-4">
+                                            <label for="password" class="form-label">Password</label>
 
-                                            <input type="password" class="form-control" name="password" id="password"
-                                                placeholder="Password" required>
+                                            <div class="input-wrap">
+                                                <span class="input-icon">
+                                                    <i class="zmdi zmdi-lock"></i>
+                                                </span>
 
-                                            <span class="password-toggle" id="togglePassword">
-                                                <i class="zmdi zmdi-eye"></i>
-                                            </span>
+                                                <input type="password"
+                                                       class="form-control"
+                                                       name="password"
+                                                       id="password"
+                                                       placeholder="Enter password"
+                                                       required>
+
+                                                <button type="button"
+                                                        class="password-toggle"
+                                                        id="togglePassword"
+                                                        aria-label="Show password">
+                                                    <i class="zmdi zmdi-eye"></i>
+                                                </button>
+                                            </div>
                                         </div>
 
-                                        {{-- Remember me enable korte chaile uncomment korben --}}
+                                        {{-- Remember me enable korte chaile eta uncomment korben --}}
                                         {{--
-                                        <div class="checkbox mb-3">
-                                            <input id="remember_me" type="checkbox" name="remember">
-                                            <label for="remember_me">Remember Me</label>
+                                        <div class="form-check mb-4">
+                                            <input class="form-check-input" type="checkbox" name="remember" id="remember_me">
+                                            <label class="form-check-label" for="remember_me">
+                                                Remember Me
+                                            </label>
                                         </div>
                                         --}}
 
-                                        <button type="submit" class="btn btn-primary btn-block login-btn">
+                                        <button type="submit" class="btn btn-login w-100">
                                             SIGN IN
                                         </button>
                                     </form>
 
-                                    <div class="copyright text-center">
+                                    <div class="copyright">
                                         &copy; {{ date('Y') }},
                                         <span><a href="#">Shahjalal Enterprise</a></span>
                                     </div>
@@ -320,12 +386,13 @@
                             <div class="col-lg-7 d-none d-lg-block">
                                 <div class="side-panel">
                                     <div class="side-content">
-                                        <img src="{{ asset('assets/backend/images/signin.svg') }}" alt="Sign In">
+                                        <img src="{{ asset('assets/backend/images/signin.svg') }}"
+                                             alt="Sign In">
 
                                         <h3>Manage Your Business Easily</h3>
                                         <p>
                                             Secure access to your dashboard, inventory, staff,
-                                            stock and business reports.
+                                            stock and business reports from one place.
                                         </p>
                                     </div>
                                 </div>
@@ -337,27 +404,31 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <script src="{{ asset('assets/backend/bundles/libscripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/backend/bundles/vendorscripts.bundle.js') }}"></script>
+    {{-- Bootstrap 5 JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var passwordInput = document.getElementById('password');
-            var togglePassword = document.getElementById('togglePassword');
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
 
-            if (passwordInput && togglePassword) {
-                togglePassword.addEventListener('click', function() {
-                    var isPassword = passwordInput.getAttribute('type') === 'password';
+            if (!passwordInput || !togglePassword) return;
 
-                    passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-                    togglePassword.innerText = isPassword ? 'HIDE' : 'SHOW';
-                });
-            }
+            togglePassword.addEventListener('click', function () {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                const icon = togglePassword.querySelector('i');
+
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                togglePassword.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+
+                if (icon) {
+                    icon.className = isPassword ? 'zmdi zmdi-eye-off' : 'zmdi zmdi-eye';
+                }
+            });
         });
     </script>
 
 </body>
-
 </html>
