@@ -108,6 +108,20 @@
             background: #ffffff;
         }
 
+        .admin-footer a {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .admin-footer a:hover {
+            color: #ec4899;
+        }
+
+        .admin-footer strong {
+            color: #111827;
+            font-weight: 850;
+        }
+
         .brand-card {
             padding: 22px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, .07);
@@ -485,9 +499,27 @@
             </section>
 
             <footer class="admin-footer">
-                <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-                    <span>&copy; {{ date('Y') }} Shahjalal Enterprise. All rights reserved.</span>
-                    <span>Admin Panel</span>
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                    <span>
+                        &copy; {{ date('Y') }} Shahjalal Enterprise. All rights reserved.
+                    </span>
+
+                    <span>
+                        Developed by
+                        <strong>Towhid Hasan Zahor</strong>
+                        <span class="mx-1 d-none d-md-inline">|</span>
+                        <br class="d-md-none">
+
+                        <a href="mailto:towhid.hasan.zahor@gmail.com">
+                            towhid.hasan.zahor@gmail.com
+                        </a>
+
+                        <span class="mx-1">|</span>
+
+                        <a href="tel:01521256487">
+                            01521256487
+                        </a>
+                    </span>
                 </div>
             </footer>
         </main>

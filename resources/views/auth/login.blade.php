@@ -19,12 +19,11 @@
     <style>
         :root {
             --primary: #7c3aed;
-            --primary-dark: #6d28d9;
             --secondary: #ec4899;
-            --text-dark: #1f2937;
-            --text-muted: #6b7280;
-            --border: #dde3ee;
-            --bg-soft: #f8f7ff;
+            --dark: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --soft: #f8fafc;
         }
 
         * {
@@ -34,11 +33,11 @@
         body {
             min-height: 100vh;
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Inter, Arial, Helvetica, sans-serif;
             background:
-                radial-gradient(circle at top left, rgba(124, 58, 237, 0.14), transparent 34%),
-                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.14), transparent 32%),
-                linear-gradient(135deg, #f8f7ff 0%, #eff6ff 45%, #fff7ed 100%);
+                radial-gradient(circle at top left, rgba(124, 58, 237, 0.13), transparent 34%),
+                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.11), transparent 30%),
+                linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #fff7ed 100%);
         }
 
         .login-page {
@@ -50,36 +49,42 @@
 
         .login-card {
             border: 0;
-            border-radius: 28px;
+            border-radius: 30px;
             overflow: hidden;
             background: #ffffff;
-            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.15);
+            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.16);
         }
 
         .login-form-area {
-            padding: 46px 42px;
+            min-height: 620px;
+            padding: 54px 48px 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .brand-area {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 34px;
         }
 
         .brand-logo {
-            width: 78px;
-            height: 78px;
+            width: 74px;
+            height: 74px;
             object-fit: contain;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .brand-area h4 {
-            color: var(--text-dark);
-            font-weight: 800;
-            margin-bottom: 7px;
+            color: var(--dark);
+            font-size: 26px;
+            font-weight: 850;
+            letter-spacing: -0.4px;
+            margin-bottom: 8px;
         }
 
         .brand-area p {
-            color: var(--text-muted);
+            color: var(--muted);
             font-size: 14px;
             margin-bottom: 0;
         }
@@ -87,7 +92,7 @@
         .form-label {
             color: #374151;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 750;
             margin-bottom: 8px;
         }
 
@@ -96,21 +101,25 @@
         }
 
         .input-wrap .form-control {
-            height: 52px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
+            height: 54px;
+            border-radius: 16px;
+            border: 1px solid #dfe5ef;
             background: #fbfcff;
             padding-left: 48px;
             padding-right: 48px;
             font-size: 14px;
-            color: var(--text-dark);
+            color: var(--dark);
             transition: all 0.2s ease;
+        }
+
+        .input-wrap .form-control::placeholder {
+            color: #9ca3af;
         }
 
         .input-wrap .form-control:focus {
             border-color: var(--primary);
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.13);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
         }
 
         .input-icon {
@@ -143,59 +152,105 @@
         }
 
         .btn-login {
-            height: 52px;
+            height: 54px;
             border: 0;
-            border-radius: 14px;
+            border-radius: 16px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: #ffffff;
-            font-weight: 800;
+            font-weight: 850;
             letter-spacing: 0.4px;
-            box-shadow: 0 14px 28px rgba(124, 58, 237, 0.26);
+            box-shadow: 0 16px 32px rgba(124, 58, 237, 0.26);
             transition: all 0.2s ease;
         }
 
         .btn-login:hover {
             color: #ffffff;
             transform: translateY(-1px);
-            box-shadow: 0 18px 35px rgba(124, 58, 237, 0.34);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.34);
         }
 
-        .btn-login:active {
-            transform: translateY(0);
+        .divider-line {
+            height: 1px;
+            background: #eef2f7;
+            margin: 26px 0 18px;
+        }
+
+        .login-footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            font-weight: 750;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .developer-line {
+            margin-top: 4px;
+            color: #64748b;
+        }
+
+        .developer-line strong {
+            color: #111827;
+            font-weight: 850;
+        }
+
+        .developer-contact {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+
+        .developer-contact span {
+            color: #cbd5e1;
         }
 
         .side-panel {
-            min-height: 560px;
+            min-height: 620px;
             height: 100%;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 48px;
-            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            padding: 54px;
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.13), transparent 28%),
+                linear-gradient(135deg, #7c3aed 0%, #9333ea 38%, #ec4899 100%);
         }
 
         .side-panel::before {
             content: "";
             position: absolute;
-            width: 270px;
-            height: 270px;
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.14);
-            top: -90px;
-            right: -75px;
+            background: rgba(255, 255, 255, 0.11);
+            top: -100px;
+            right: -80px;
         }
 
         .side-panel::after {
             content: "";
             position: absolute;
-            width: 230px;
-            height: 230px;
+            width: 240px;
+            height: 240px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.12);
-            bottom: -80px;
-            left: -75px;
+            background: rgba(255, 255, 255, 0.10);
+            bottom: -90px;
+            left: -80px;
         }
 
         .side-content {
@@ -203,58 +258,45 @@
             z-index: 2;
             color: #ffffff;
             text-align: center;
+            max-width: 520px;
         }
 
         .side-content img {
             width: 100%;
-            max-width: 430px;
-            margin-bottom: 28px;
+            max-width: 390px;
+            margin-bottom: 34px;
+            filter: drop-shadow(0 18px 28px rgba(15, 23, 42, 0.12));
         }
 
         .side-content h3 {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 12px;
+            font-size: 30px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
         }
 
         .side-content p {
-            max-width: 440px;
+            max-width: 430px;
             margin: 0 auto;
             font-size: 15px;
-            line-height: 1.75;
-            opacity: 0.94;
-        }
-
-        .copyright {
-            margin-top: 24px;
-            font-size: 13px;
-            color: var(--text-muted);
-            text-align: center;
-        }
-
-        .copyright a {
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .copyright a:hover {
-            text-decoration: underline;
+            line-height: 1.8;
+            opacity: 0.92;
         }
 
         .alert {
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 14px;
             padding: 12px 14px;
         }
 
         @media (max-width: 991.98px) {
             .login-form-area {
-                padding: 38px 28px;
+                min-height: auto;
+                padding: 42px 30px 30px;
             }
 
             .login-card {
-                border-radius: 24px;
+                border-radius: 26px;
             }
         }
 
@@ -264,16 +306,25 @@
             }
 
             .login-form-area {
-                padding: 32px 22px;
+                padding: 34px 22px 26px;
             }
 
             .brand-logo {
-                width: 66px;
-                height: 66px;
+                width: 64px;
+                height: 64px;
             }
 
             .brand-area h4 {
-                font-size: 21px;
+                font-size: 22px;
+            }
+
+            .developer-contact {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .developer-contact span {
+                display: none;
             }
         }
     </style>
@@ -360,24 +411,33 @@
                                             </div>
                                         </div>
 
-                                        {{-- Remember me enable korte chaile eta uncomment korben --}}
-                                        {{--
-                                        <div class="form-check mb-4">
-                                            <input class="form-check-input" type="checkbox" name="remember" id="remember_me">
-                                            <label class="form-check-label" for="remember_me">
-                                                Remember Me
-                                            </label>
-                                        </div>
-                                        --}}
-
                                         <button type="submit" class="btn btn-login w-100">
                                             SIGN IN
                                         </button>
                                     </form>
 
-                                    <div class="copyright">
-                                        &copy; {{ date('Y') }},
-                                        <span><a href="#">Shahjalal Enterprise</a></span>
+                                    <div class="divider-line"></div>
+
+                                    <div class="login-footer">
+                                        <div>
+                                            &copy; {{ date('Y') }}
+                                            <a href="{{ route('index') }}">Shahjalal Enterprise</a>.
+                                            All rights reserved.
+                                        </div>
+
+                                        <div class="developer-line">
+                                            Developed by <strong>Towhid Hasan Zahor</strong>
+                                        </div>
+
+                                        <div class="developer-contact">
+                                            <a href="mailto:towhid.hasan.zahor@gmail.com">
+                                                towhid.hasan.zahor@gmail.com
+                                            </a>
+                                            <span>|</span>
+                                            <a href="tel:01521256487">
+                                                01521256487
+                                            </a>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -391,8 +451,8 @@
 
                                         <h3>Manage Your Business Easily</h3>
                                         <p>
-                                            Secure access to your dashboard, inventory, staff,
-                                            stock and business reports from one place.
+                                            Secure access to your dashboard, customers, transactions,
+                                            reports and backups from one reliable place.
                                         </p>
                                     </div>
                                 </div>

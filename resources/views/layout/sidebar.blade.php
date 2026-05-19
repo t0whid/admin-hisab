@@ -142,57 +142,19 @@
         </li>
 
         <li>
-            <button class="sidebar-toggle"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#customersMenu"
-                    aria-expanded="{{ str_starts_with($currentRoute ?? '', 'customers.') ? 'true' : 'false' }}">
+            <a href="{{ route('customers.index') }}"
+               class="sidebar-link {{ str_starts_with($currentRoute ?? '', 'customers.') ? 'active' : '' }}">
                 <i class="fa fa-users"></i>
-                <span class="flex-grow-1">Customers</span>
-                <i class="fa fa-angle-down"></i>
-            </button>
-
-            <div class="collapse {{ str_starts_with($currentRoute ?? '', 'customers.') ? 'show' : '' }}"
-                 id="customersMenu">
-                <div class="sidebar-submenu">
-                    <a href="{{ route('customers.index') }}"
-                       class="{{ $currentRoute === 'customers.index' ? 'active' : '' }}">
-                        All Customers
-                    </a>
-
-                    <a href="{{ route('customers.create') }}"
-                       class="{{ $currentRoute === 'customers.create' ? 'active' : '' }}">
-                        Create Customer
-                    </a>
-                </div>
-            </div>
+                <span>Customers</span>
+            </a>
         </li>
 
         <li>
-            <button class="sidebar-toggle"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#adminsMenu"
-                    aria-expanded="{{ str_starts_with($currentRoute ?? '', 'admins.') ? 'true' : 'false' }}">
+            <a href="{{ route('admins.index') }}"
+               class="sidebar-link {{ str_starts_with($currentRoute ?? '', 'admins.') ? 'active' : '' }}">
                 <i class="fa fa-user-secret"></i>
-                <span class="flex-grow-1">Admins</span>
-                <i class="fa fa-angle-down"></i>
-            </button>
-
-            <div class="collapse {{ str_starts_with($currentRoute ?? '', 'admins.') ? 'show' : '' }}"
-                 id="adminsMenu">
-                <div class="sidebar-submenu">
-                    <a href="{{ route('admins.index') }}"
-                       class="{{ $currentRoute === 'admins.index' ? 'active' : '' }}">
-                        All Admins
-                    </a>
-
-                    <a href="{{ route('admins.create') }}"
-                       class="{{ $currentRoute === 'admins.create' ? 'active' : '' }}">
-                        Create Admin
-                    </a>
-                </div>
-            </div>
+                <span>Admins</span>
+            </a>
         </li>
 
         <li>
