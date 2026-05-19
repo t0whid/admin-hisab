@@ -10,8 +10,8 @@
                 <i class="fa fa-line-chart"></i>
             </span>
             <span>
-                <span class="brand-title d-block">Shahjalal</span>
-                <span class="brand-subtitle d-block">Enterprise Admin</span>
+                <span class="brand-title d-block">Shahjalal Enterprise</span>
+                <span class="brand-subtitle d-block">Admin</span>
             </span>
         </a>
     </div>
