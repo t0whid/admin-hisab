@@ -438,7 +438,7 @@
             font-size: 14px;
         }
 
-        #toast-container > div {
+        #toast-container>div {
             border-radius: 14px;
             box-shadow: 0 18px 45px rgba(16, 24, 40, .16);
             opacity: 1;
@@ -476,6 +476,182 @@
 
             body.sidebar-open .mobile-sidebar-backdrop {
                 display: block;
+            }
+        }
+
+        /* Gorgeous DataTable Toolbar */
+        .dataTables_wrapper .dt-topbar {
+            padding: 16px 18px;
+            margin-bottom: 18px;
+            border: 1px solid #eef2f7;
+            border-radius: 20px;
+            background:
+                linear-gradient(135deg, rgba(248, 247, 255, 0.95), rgba(255, 255, 255, 0.98));
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .dataTables_wrapper .dt-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .dataTables_wrapper .dt-buttons .btn {
+            border-radius: 14px !important;
+            font-weight: 850;
+            padding: 9px 15px;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            color: #334155;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, .06);
+            transition: all .18s ease;
+        }
+
+        .dataTables_wrapper .dt-buttons .btn:hover {
+            color: #ffffff;
+            border-color: transparent;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(124, 58, 237, .24);
+        }
+
+        .dataTables_wrapper .dataTables_length {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .dataTables_wrapper .dataTables_length label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            padding: 8px 12px;
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, .05);
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            min-width: 88px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid #ddd6fe;
+            background-color: #f8f7ff;
+            color: #4c1d95;
+            font-size: 14px;
+            font-weight: 850;
+            padding: 6px 34px 6px 12px;
+            cursor: pointer;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .dataTables_wrapper .dataTables_filter label {
+            width: 100%;
+            max-width: 300px;
+            margin: 0;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            width: 100% !important;
+            height: 44px;
+            border-radius: 16px;
+            border: 1px solid #dde3ee;
+            background: #ffffff;
+            padding: 10px 14px;
+            font-size: 14px;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, .04);
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus,
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 .25rem rgba(124, 58, 237, .12);
+            outline: 0;
+        }
+
+        .dataTables_wrapper table.dataTable {
+            border-collapse: separate !important;
+            border-spacing: 0 6px !important;
+        }
+
+        .dataTables_wrapper table.dataTable thead th {
+            border-bottom: 0 !important;
+        }
+
+        .dataTables_wrapper table.dataTable tbody tr {
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035);
+        }
+
+        .dataTables_wrapper table.dataTable tbody td {
+            border-top: 1px solid #eef2f7;
+            border-bottom: 1px solid #eef2f7;
+        }
+
+        .dataTables_wrapper table.dataTable tbody td:first-child {
+            border-left: 1px solid #eef2f7;
+            border-radius: 14px 0 0 14px;
+        }
+
+        .dataTables_wrapper table.dataTable tbody td:last-child {
+            border-right: 1px solid #eef2f7;
+            border-radius: 0 14px 14px 0;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .dataTables_wrapper .pagination {
+            gap: 5px;
+            justify-content: flex-end;
+        }
+
+        .dataTables_wrapper .page-link {
+            min-width: 38px;
+            height: 38px;
+            border-radius: 12px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-color: #e2e8f0;
+            color: #475569;
+            font-weight: 800;
+        }
+
+        .dataTables_wrapper .page-item.active .page-link {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            border-color: transparent;
+            box-shadow: 0 10px 22px rgba(124, 58, 237, .24);
+        }
+
+        @media (max-width: 767.98px) {
+            .dataTables_wrapper .dt-topbar {
+                padding: 14px;
+            }
+
+            .dataTables_wrapper .dataTables_filter {
+                justify-content: flex-start;
+            }
+
+            .dataTables_wrapper .dataTables_filter label {
+                max-width: 100%;
+            }
+
+            .dataTables_wrapper .pagination {
+                justify-content: flex-start;
             }
         }
     </style>
@@ -548,25 +724,25 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const body = document.body;
             const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
             if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', function () {
+                sidebarToggle.addEventListener('click', function() {
                     body.classList.toggle('sidebar-open');
                 });
             }
 
             if (sidebarBackdrop) {
-                sidebarBackdrop.addEventListener('click', function () {
+                sidebarBackdrop.addEventListener('click', function() {
                     body.classList.remove('sidebar-open');
                 });
             }
 
-            document.querySelectorAll('.admin-sidebar a').forEach(function (link) {
-                link.addEventListener('click', function () {
+            document.querySelectorAll('.admin-sidebar a').forEach(function(link) {
+                link.addEventListener('click', function() {
                     if (window.innerWidth < 992) {
                         body.classList.remove('sidebar-open');
                     }
@@ -590,10 +766,10 @@
     </script>
 
     <script>
-        $(function () {
+        $(function() {
             const $tables = $('.datatable, #datatable-buttons');
 
-            $tables.each(function () {
+            $tables.each(function() {
                 const $table = $(this);
 
                 if ($.fn.DataTable.isDataTable(this)) {
@@ -603,28 +779,55 @@
                 $table.DataTable({
                     responsive: true,
                     pageLength: 10,
-                    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
-                    order: [[0, 'asc']],
-                    dom:
-                        "<'row align-items-center g-3 mb-3'<'col-md-6'B><'col-md-6'f>>" +
+                    lengthMenu: [
+                        [10, 25, 50, 100, 500],
+                        [10, 25, 50, 100, 500]
+                    ],
+                    order: [
+                        [0, 'asc']
+                    ],
+                    dom: "<'dt-topbar'<'row align-items-center g-3'<'col-xl-4 col-lg-5 col-md-12'B><'col-xl-3 col-lg-3 col-md-5'l><'col-xl-5 col-lg-4 col-md-7'f>>>" +
                         "<'row'<'col-12'tr>>" +
                         "<'row align-items-center g-3 mt-3'<'col-md-5'i><'col-md-7'p>>",
-                    buttons: [
-                        { extend: 'copy', className: 'btn btn-sm' },
-                        { extend: 'excel', className: 'btn btn-sm' },
-                        { extend: 'pdf', className: 'btn btn-sm' },
-                        { extend: 'print', className: 'btn btn-sm' }
+                    buttons: [{
+                            extend: 'copy',
+                            className: 'btn btn-sm',
+                            text: '<i class="fa fa-copy me-1"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'btn btn-sm',
+                            text: '<i class="fa fa-file-excel-o me-1"></i> Excel'
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'btn btn-sm',
+                            text: '<i class="fa fa-file-pdf-o me-1"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            className: 'btn btn-sm',
+                            text: '<i class="fa fa-print me-1"></i> Print'
+                        }
                     ],
                     language: {
                         search: '',
                         searchPlaceholder: 'Search records...',
-                        lengthMenu: 'Show _MENU_',
+                        lengthMenu: 'Show _MENU_ entries',
                         emptyTable: 'No records found',
-                        zeroRecords: 'No matching records found'
+                        zeroRecords: 'No matching records found',
+                        info: 'Showing _START_ to _END_ of _TOTAL_ records',
+                        infoEmpty: 'No records available',
+                        infoFiltered: '(filtered from _MAX_ total records)'
                     },
-                    columnDefs: [
-                        { targets: 'no-sort', orderable: false },
-                        { targets: 'no-search', searchable: false }
+                    columnDefs: [{
+                            targets: 'no-sort',
+                            orderable: false
+                        },
+                        {
+                            targets: 'no-search',
+                            searchable: false
+                        }
                     ]
                 });
             });
@@ -633,19 +836,27 @@
 
     {{-- Laravel flash messages --}}
     @if (session('success'))
-        <script>toastr.success(@json(session('success')));</script>
+        <script>
+            toastr.success(@json(session('success')));
+        </script>
     @endif
 
     @if (session('error'))
-        <script>toastr.error(@json(session('error')));</script>
+        <script>
+            toastr.error(@json(session('error')));
+        </script>
     @endif
 
     @if (session('warning'))
-        <script>toastr.warning(@json(session('warning')));</script>
+        <script>
+            toastr.warning(@json(session('warning')));
+        </script>
     @endif
 
     @if (session('info'))
-        <script>toastr.info(@json(session('info')));</script>
+        <script>
+            toastr.info(@json(session('info')));
+        </script>
     @endif
 
     @if ($errors->any())
