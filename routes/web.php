@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
@@ -40,6 +41,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/transactions/{transaction}', [TransactionController::class, 'update'])
         ->name('transactions.update');
 
+    Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy'])
+        ->name('transactions.destroy');
+
     Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
     Route::get('/backup-download', [BackupController::class, 'downloadBackupZip'])->name('backup.downloadzip');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
