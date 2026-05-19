@@ -107,6 +107,11 @@
         white-space: nowrap;
     }
 
+    .amount-danger {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
     .btn-gradient {
         background: linear-gradient(135deg, #7c3aed, #ec4899);
         border: 0;
@@ -133,11 +138,34 @@
         background: #f1f5f9;
         color: #475569;
         border: 1px solid #e2e8f0;
+        text-decoration: none;
     }
 
     .btn-icon-soft:hover {
         background: #ede9fe;
         color: #7c3aed;
+    }
+
+    .btn-icon-danger {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+
+    .btn-icon-danger:hover {
+        background: #fecaca;
+        color: #991b1b;
+    }
+
+    .btn-icon-danger:disabled {
+        opacity: .45;
+        cursor: not-allowed;
     }
 
     @media (max-width: 767.98px) {
@@ -187,10 +215,17 @@
                         <th class="no-sort no-search text-end">Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach ($customers as $customer)
+                        @php
+                            $customerAmount = (float) ($customer->amount ?? 0);
+                            $canDelete = abs($customerAmount) <= 0.00001;
+                        @endphp
+
                         <tr class="customer-row" onclick="window.location='{{ route('customers.show', $customer->id) }}';">
                             <td class="fw-bold text-muted">{{ $loop->iteration }}</td>
+
                             <td>
                                 <img
                                     src="{{ $customer->image ? asset($customer->image) : asset('assets/customers/user.png') }}"
@@ -198,18 +233,53 @@
                                     class="avatar-img"
                                     onerror="this.src='{{ asset('assets/customers/user.png') }}'">
                             </td>
+
                             <td>
                                 <div class="fw-bold text-dark">{{ $customer->full_name }}</div>
                                 <div class="small text-muted">{{ $customer->email ?: 'No email' }}</div>
                             </td>
+
                             <td>{{ $customer->father_name ?: '-' }}</td>
+
                             <td>{{ $customer->address ?: '-' }}</td>
-                            <td><span class="amount-badge">{{ number_format((float) ($customer->amount ?? 0), 2) }}</span></td>
+
+                            <td>
+                                <span class="amount-badge {{ !$canDelete ? 'amount-danger' : '' }}">
+                                    {{ number_format($customerAmount, 2) }}
+                                </span>
+                            </td>
+
                             <td>{{ $customer->phone ?: '-' }}</td>
+
                             <td class="text-end" onclick="event.stopPropagation();">
-                                <a href="{{ route('customers.show', $customer->id) }}" class="btn-icon-soft" title="View">
-                                    <i class="fa fa-eye"></i>
-                                </a>
+                                <div class="d-inline-flex gap-2">
+                                    <a href="{{ route('customers.show', $customer->id) }}"
+                                       class="btn-icon-soft"
+                                       title="View">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+
+                                    <a href="{{ route('customers.edit', $customer->id) }}"
+                                       class="btn-icon-soft"
+                                       title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+
+                                    <form action="{{ route('customers.destroy', $customer->id) }}"
+                                          method="POST"
+                                          class="d-inline"
+                                          onsubmit="return confirmCustomerDelete({{ $canDelete ? 'true' : 'false' }});">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="btn-icon-danger"
+                                                title="{{ $canDelete ? 'Delete' : 'Amount must be 0 before delete' }}"
+                                                {{ $canDelete ? '' : 'disabled' }}>
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -218,4 +288,17 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    function confirmCustomerDelete(canDelete) {
+        if (!canDelete) {
+            alert('Customer delete kora jabe na. Customer amount 0 hote hobe.');
+            return false;
+        }
+
+        return confirm('Are you sure you want to delete this customer? This customer transaction history will also be deleted.');
+    }
+</script>
 @endsection

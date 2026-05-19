@@ -11,6 +11,7 @@
     .profile-name { font-size: 22px; font-weight: 900; color: #111827; margin: 18px 0 4px; }
     .profile-phone { color: #6b7280; margin-bottom: 0; }
     .amount-pill { display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; border-radius: 999px; background: #ccfbf1; color: #0f766e; font-weight: 900; margin-top: 16px; }
+    .amount-pill-danger { background: #fee2e2; color: #b91c1c; }
     .details-card-header, .history-card-header { padding: 22px 24px; border-bottom: 1px solid #eef2f7; background: linear-gradient(135deg, #f8f7ff, #fff); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .details-card-header h5, .history-card-header h5 { margin: 0; font-weight: 900; color: #111827; }
     .details-list { padding: 8px 24px 24px; }
@@ -18,32 +19,70 @@
     .detail-row:last-child { border-bottom: 0; }
     .detail-label { color: #64748b; font-weight: 800; }
     .detail-value { color: #111827; font-weight: 700; word-break: break-word; }
-    .btn-gradient { border: 0; border-radius: 14px; padding: 11px 18px; font-weight: 800; color: #fff; background: linear-gradient(135deg,#7c3aed,#ec4899); box-shadow: 0 14px 28px rgba(124,58,237,.24); }
+    .btn-gradient { border: 0; border-radius: 14px; padding: 11px 18px; font-weight: 800; color: #fff; background: linear-gradient(135deg,#7c3aed,#ec4899); box-shadow: 0 14px 28px rgba(124,58,237,.24); text-decoration: none; }
     .btn-gradient:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 18px 34px rgba(124,58,237,.32); }
-    .btn-light-soft { border-radius: 14px; padding: 11px 16px; font-weight: 800; background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
-    .btn-danger-soft { border: 0; border-radius: 14px; padding: 11px 18px; font-weight: 800; background: #fee2e2; color: #b91c1c; }
+    .btn-light-soft { border-radius: 14px; padding: 11px 16px; font-weight: 800; background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; text-decoration: none; }
+    .btn-danger-soft { border: 0; border-radius: 14px; padding: 11px 18px; font-weight: 800; background: #fee2e2; color: #b91c1c; text-decoration: none; }
     .btn-danger-soft:hover { background: #fecaca; color: #991b1b; }
+    .btn-danger-soft:disabled { opacity: .45; cursor: not-allowed; }
     .table-modern { margin-bottom: 0; vertical-align: middle; }
     .table-modern thead th { background: #f8fafc; color: #475569; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid #e5e7eb; padding: 14px 16px; white-space: nowrap; }
     .table-modern tbody td { padding: 14px 16px; color: #334155; border-color: #eef2f7; }
     .type-badge { display: inline-flex; padding: 7px 10px; border-radius: 999px; font-size: 12px; font-weight: 900; background: #e0e7ff; color: #3730a3; }
+    .delete-note { border-radius: 16px; background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 12px 14px; font-size: 14px; }
     @media (max-width: 767.98px) { .detail-row { grid-template-columns: 1fr; gap: 4px; } }
 </style>
 @endsection
 
 @section('content')
+@php
+    $customerAmount = (float) ($customer->amount ?? 0);
+    $canDelete = abs($customerAmount) <= 0.00001;
+@endphp
+
 <div class="container-fluid py-4">
     <div class="page-head">
         <div class="page-title">
             <h1>Customer Details</h1>
             <p>View profile, balance and transaction history.</p>
         </div>
+
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('customers.index') }}" class="btn btn-light-soft"><i class="fa fa-arrow-left me-1"></i> Back</a>
-            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-gradient"><i class="fa fa-edit me-1"></i> Edit</a>
-            <a href="{{ route('transactions.create', $customer->id) }}" class="btn btn-danger-soft"><i class="fa fa-plus me-1"></i> Add Transaction</a>
+            <a href="{{ route('customers.index') }}" class="btn btn-light-soft">
+                <i class="fa fa-arrow-left me-1"></i> Back
+            </a>
+
+            <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-gradient">
+                <i class="fa fa-edit me-1"></i> Edit
+            </a>
+
+            <a href="{{ route('transactions.create', $customer->id) }}" class="btn btn-danger-soft">
+                <i class="fa fa-plus me-1"></i> Add Transaction
+            </a>
+
+            <form action="{{ route('customers.destroy', $customer->id) }}"
+                  method="POST"
+                  class="d-inline"
+                  onsubmit="return confirmCustomerDelete({{ $canDelete ? 'true' : 'false' }});">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                        class="btn btn-danger-soft"
+                        {{ $canDelete ? '' : 'disabled' }}
+                        title="{{ $canDelete ? 'Delete Customer' : 'Amount must be 0 before delete' }}">
+                    <i class="fa fa-trash me-1"></i> Delete
+                </button>
+            </form>
         </div>
     </div>
+
+    @if (!$canDelete)
+        <div class="delete-note mb-4">
+            <i class="fa fa-info-circle me-1"></i>
+            This customer cannot be deleted because current amount is not 0.
+        </div>
+    @endif
 
     <div class="row g-4">
         <div class="col-xl-3 col-lg-4">
@@ -53,9 +92,13 @@
                     alt="{{ $customer->full_name }}"
                     class="profile-img"
                     onerror="this.src='{{ asset('assets/customers/user.png') }}'">
+
                 <div class="profile-name">{{ $customer->full_name }}</div>
                 <p class="profile-phone">{{ $customer->phone ?: 'No phone number' }}</p>
-                <div class="amount-pill">Amount: {{ $customer->amount ?? 0 }}</div>
+
+                <div class="amount-pill {{ !$canDelete ? 'amount-pill-danger' : '' }}">
+                    Amount: {{ number_format($customerAmount, 2) }}
+                </div>
             </div>
         </div>
 
@@ -70,29 +113,40 @@
                         <div class="detail-label">Full Name</div>
                         <div class="detail-value">{{ $customer->full_name ?: '-' }}</div>
                     </div>
+
                     <div class="detail-row">
                         <div class="detail-label">Father Name</div>
                         <div class="detail-value">{{ $customer->father_name ?: '-' }}</div>
                     </div>
+
                     <div class="detail-row">
                         <div class="detail-label">Address</div>
                         <div class="detail-value">{{ $customer->address ?: '-' }}</div>
                     </div>
+
                     <div class="detail-row">
                         <div class="detail-label">Age</div>
                         <div class="detail-value">{{ $customer->age ?: '-' }}</div>
                     </div>
+
                     <div class="detail-row">
                         <div class="detail-label">Mobile</div>
                         <div class="detail-value">{{ $customer->phone ?: '-' }}</div>
                     </div>
+
                     <div class="detail-row">
                         <div class="detail-label">Email</div>
                         <div class="detail-value">{{ $customer->email ?: '-' }}</div>
                     </div>
+
                     <div class="detail-row">
                         <div class="detail-label">Amount</div>
-                        <div class="detail-value">{{ $customer->amount ?? 0 }}</div>
+                        <div class="detail-value">{{ number_format($customerAmount, 2) }}</div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-label">Updated By</div>
+                        <div class="detail-value">{{ $customer->updated_by ?: '-' }}</div>
                     </div>
                 </div>
             </div>
@@ -102,6 +156,7 @@
     <div class="history-card mt-4">
         <div class="history-card-header">
             <h5>Transaction History</h5>
+
             <a href="{{ route('transactions.create', $customer->id) }}" class="btn btn-gradient btn-sm">
                 <i class="fa fa-plus me-1"></i> Add Transaction
             </a>
@@ -121,19 +176,34 @@
                         <th>Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse ($transactions as $transaction)
                         <tr>
                             <td class="fw-bold text-muted">{{ $loop->iteration }}</td>
-                            <td><span class="type-badge">{{ ucfirst($transaction->type) }}</span></td>
-                            <td>{{ $transaction->last_transaction }}</td>
-                            <td class="fw-bold">{{ $transaction->total_amount }}</td>
+
+                            <td>
+                                <span class="type-badge">{{ ucfirst($transaction->type) }}</span>
+                            </td>
+
+                            <td>{{ number_format((float) $transaction->last_transaction, 2) }}</td>
+
+                            <td class="fw-bold">{{ number_format((float) $transaction->total_amount, 2) }}</td>
+
                             <td>{{ $transaction->description ?: '-' }}</td>
+
                             <td>{{ $transaction->updated_by ?: '-' }}</td>
-                            <td>{{ $transaction->created_at ? $transaction->created_at->format('Y-m-d') : '-' }}</td>
+
+                            <td>
+                                {{ $transaction->created_at ? $transaction->created_at->format('Y-m-d') : '-' }}
+                            </td>
+
                             <td>
                                 @if ($loop->first)
-                                    <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn btn-sm btn-light-soft">Update</a>
+                                    <a href="{{ route('transactions.edit', $transaction->id) }}"
+                                       class="btn btn-sm btn-light-soft">
+                                        Update
+                                    </a>
                                 @else
                                     <span class="text-muted small">—</span>
                                 @endif
@@ -143,7 +213,11 @@
                         <tr>
                             <td colspan="8" class="text-center py-5">
                                 <div class="fw-bold text-muted">No transactions found</div>
-                                <a href="{{ route('transactions.create', $customer->id) }}" class="btn btn-sm btn-gradient mt-3">Add First Transaction</a>
+
+                                <a href="{{ route('transactions.create', $customer->id) }}"
+                                   class="btn btn-sm btn-gradient mt-3">
+                                    Add First Transaction
+                                </a>
                             </td>
                         </tr>
                     @endforelse
@@ -155,4 +229,14 @@
 @endsection
 
 @section('script')
+<script>
+    function confirmCustomerDelete(canDelete) {
+        if (!canDelete) {
+            alert('Customer delete kora jabe na. Customer amount 0 hote hobe.');
+            return false;
+        }
+
+        return confirm('Are you sure you want to delete this customer? This customer transaction history will also be deleted.');
+    }
+</script>
 @endsection
