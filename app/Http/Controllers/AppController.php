@@ -9,50 +9,119 @@ use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-
     public function index()
     {
-        $todayTransactions = Transaction::whereDate('updated_at', Carbon::today())->get();
-        $totalDebit = $todayTransactions->where('type', 'debit')->sum('last_transaction');
-        $totalCredit = $todayTransactions->where('type', 'credit')->sum('last_transaction');
+        $today = Carbon::today();
+
+        $todayTransactions = Transaction::with('customer')
+            ->whereDate('updated_at', $today)
+            ->latest('updated_at')
+            ->get();
+
+        $totalDebit = $todayTransactions
+            ->where('type', 'debit')
+            ->sum('last_transaction');
+
+        $totalCredit = $todayTransactions
+            ->where('type', 'credit')
+            ->sum('last_transaction');
+
         $total = $totalCredit - $totalDebit;
+
         $allTimeTotal = Customer::sum('amount');
 
         $revenueComparison = [];
-        for ($i = 0; $i < 30; $i++) {
+
+        for ($i = 29; $i >= 0; $i--) {
             $date = Carbon::today()->subDays($i);
+
             $dailyTransactions = Transaction::whereDate('updated_at', $date)->get();
-            $dailyDebit = $dailyTransactions->where('type', 'debit')->sum('last_transaction');
-            $dailyCredit = $dailyTransactions->where('type', 'credit')->sum('last_transaction');
+
+            $dailyDebit = $dailyTransactions
+                ->where('type', 'debit')
+                ->sum('last_transaction');
+
+            $dailyCredit = $dailyTransactions
+                ->where('type', 'credit')
+                ->sum('last_transaction');
+
             $dailyTotal = $dailyCredit - $dailyDebit;
+
             $revenueComparison[$date->format('Y-m-d')] = $dailyTotal;
         }
 
-        return view('layout.dashboard', compact('allTimeTotal','todayTransactions', 'total', 'revenueComparison', 'totalDebit', 'totalCredit'));
+        return view('layout.dashboard', compact(
+            'allTimeTotal',
+            'todayTransactions',
+            'total',
+            'revenueComparison',
+            'totalDebit',
+            'totalCredit'
+        ));
     }
 
     public function showReport(Request $request)
     {
-        $selectedDate = $request->input('date');
-        /* dd($selectedDate);     */
+        /*
+        |--------------------------------------------------------------------------
+        | Selected Date
+        |--------------------------------------------------------------------------
+        | GET request hole today date use korbe.
+        | POST request hole form er selected date use korbe.
+        */
+        $selectedDate = $request->input('date', Carbon::today()->format('Y-m-d'));
+
+        try {
+            $selectedDate = Carbon::parse($selectedDate)->format('Y-m-d');
+        } catch (\Exception $e) {
+            $selectedDate = Carbon::today()->format('Y-m-d');
+        }
+
         $allTimeTotal = Customer::sum('amount');
 
-        $transactions = Transaction::whereDate('updated_at', $selectedDate)->get();
+        $transactions = Transaction::with('customer')
+            ->whereDate('updated_at', $selectedDate)
+            ->latest('updated_at')
+            ->get();
 
-        $totalDebit = $transactions->where('type', 'debit')->sum('last_transaction');
-        $totalCredit = $transactions->where('type', 'credit')->sum('last_transaction');
+        $totalDebit = $transactions
+            ->where('type', 'debit')
+            ->sum('last_transaction');
+
+        $totalCredit = $transactions
+            ->where('type', 'credit')
+            ->sum('last_transaction');
+
         $total = $totalCredit - $totalDebit;
 
         $revenueComparison = [];
-        for ($i = 0; $i < 30; $i++) {
+
+        for ($i = 29; $i >= 0; $i--) {
             $date = Carbon::parse($selectedDate)->subDays($i);
+
             $dailyTransactions = Transaction::whereDate('updated_at', $date)->get();
-            $dailyDebit = $dailyTransactions->where('type', 'debit')->sum('last_transaction');
-            $dailyCredit = $dailyTransactions->where('type', 'credit')->sum('last_transaction');
+
+            $dailyDebit = $dailyTransactions
+                ->where('type', 'debit')
+                ->sum('last_transaction');
+
+            $dailyCredit = $dailyTransactions
+                ->where('type', 'credit')
+                ->sum('last_transaction');
+
             $dailyTotal = $dailyCredit - $dailyDebit;
+
             $revenueComparison[$date->format('Y-m-d')] = $dailyTotal;
         }
 
-        return view('layout.report', compact('transactions','allTimeTotal', 'selectedDate', 'total', 'revenueComparison', 'totalDebit', 'totalCredit'));
+        return view('layout.report', compact(
+            'transactions',
+            'allTimeTotal',
+            'selectedDate',
+            'total',
+            'revenueComparison',
+            'totalDebit',
+            'totalCredit'
+        ));
     }
 }
