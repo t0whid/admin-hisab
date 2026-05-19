@@ -1,154 +1,99 @@
-<div class="col-md-3 left_col">
-    <div class="left_col scroll-view">
-        <div class="navbar nav_title" style="border: 0;">
-            <a href="{{ route('index') }}" class="site_title"><i class="fa fa-paw"></i> <span>Admin Panel</span></a>
-        </div>
+@php
+    $currentRoute = Route::currentRouteName();
+    $userImage = $user && !empty($user->image) ? asset($user->image) : asset('assets/backend/images/profile_av.jpg');
+@endphp
 
-        <div class="clearfix"></div>
-
-        <!-- menu profile quick info -->
-        <div class="profile clearfix">
-            <div class="profile_pic">
-                <img src="{{ asset($user->image) }}" alt="..." class="img-circle profile_img">
-            </div>
-            <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>{{ $user->name }}</h2>
-            </div>
-        </div>
-        <!-- /menu profile quick info -->
-
-        <br />
-
-        <!-- sidebar menu -->
-        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-                <h3>General</h3>
-                <ul class="nav side-menu">
-                    <li><a href="{{ route('index') }}"><i class="fa fa-home"></i> Dashboard </a> </li>
-                    <li><a><i class="fa fa-users"></i> Customers <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('customers.index') }}">All</a></li>
-                            <li><a href="{{ route('customers.create') }}">Create</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="{{ route('backup.index') }}"><i class="fa fa-database"></i> Backup </a> </li>
-                    {{-- <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="index.html">Dashboard</a></li>
-                            <li><a href="index2.html">Dashboard2</a></li>
-                            <li><a href="index3.html">Dashboard3</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="form.html">General Form</a></li>
-                            <li><a href="form_advanced.html">Advanced Components</a></li>
-                            <li><a href="form_validation.html">Form Validation</a></li>
-                            <li><a href="form_wizards.html">Form Wizard</a></li>
-                            <li><a href="form_upload.html">Form Upload</a></li>
-                            <li><a href="form_buttons.html">Form Buttons</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="general_elements.html">General Elements</a></li>
-                            <li><a href="media_gallery.html">Media Gallery</a></li>
-                            <li><a href="typography.html">Typography</a></li>
-                            <li><a href="icons.html">Icons</a></li>
-                            <li><a href="glyphicons.html">Glyphicons</a></li>
-                            <li><a href="widgets.html">Widgets</a></li>
-                            <li><a href="invoice.html">Invoice</a></li>
-                            <li><a href="inbox.html">Inbox</a></li>
-                            <li><a href="calendar.html">Calendar</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="tables.html">Tables</a></li>
-                            <li><a href="tables_dynamic.html">Table Dynamic</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span
-                                class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="chartjs.html">Chart JS</a></li>
-                            <li><a href="chartjs2.html">Chart JS2</a></li>
-                            <li><a href="morisjs.html">Moris JS</a></li>
-                            <li><a href="echarts.html">ECharts</a></li>
-                            <li><a href="other_charts.html">Other Charts</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                            <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                        </ul>
-                    </li> --}}
-                </ul>
-            </div>
-            {{-- <div class="menu_section">
-                <h3>Live On</h3>
-                <ul class="nav side-menu">
-                    <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="e_commerce.html">E-commerce</a></li>
-                            <li><a href="projects.html">Projects</a></li>
-                            <li><a href="project_detail.html">Project Detail</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="profile.html">Profile</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="page_403.html">403 Error</a></li>
-                            <li><a href="page_404.html">404 Error</a></li>
-                            <li><a href="page_500.html">500 Error</a></li>
-                            <li><a href="plain_page.html">Plain Page</a></li>
-                            <li><a href="login.html">Login Page</a></li>
-                            <li><a href="pricing_tables.html">Pricing Tables</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="#level1_1">Level One</a>
-                            <li><a>Level One<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    <li class="sub_menu"><a href="level2.html">Level Two</a>
-                                    </li>
-                                    <li><a href="#level2_1">Level Two</a>
-                                    </li>
-                                    <li><a href="#level2_2">Level Two</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="#level1_2">Level One</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span
-                                class="label label-success pull-right">Coming Soon</span></a></li>
-                </ul>
-            </div> --}}
-
-        </div>
-        <!-- /sidebar menu -->
-
-        <!-- /menu footer buttons -->
-        <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-            </a>
-        </div>
-        <!-- /menu footer buttons -->
+<aside class="admin-sidebar" id="adminSidebar">
+    <div class="brand-card">
+        <a href="{{ route('index') }}" class="d-flex align-items-center gap-3">
+            <span class="brand-logo">
+                <i class="fa fa-line-chart"></i>
+            </span>
+            <span>
+                <span class="brand-title d-block">Shahjalal</span>
+                <span class="brand-subtitle d-block">Enterprise Admin</span>
+            </span>
+        </a>
     </div>
-</div>
+
+    <div class="sidebar-user d-flex align-items-center gap-3">
+        <img src="{{ $userImage }}" alt="{{ $user->name ?? 'User' }}" class="user-avatar">
+        <div class="min-w-0">
+            <div class="fw-bold text-white text-truncate">{{ $user->name ?? 'Admin' }}</div>
+            <div class="small text-white-50">
+                @if (($user->role ?? null) == 1)
+                    Super Admin
+                @elseif (($user->role ?? null) == 2)
+                    Employee
+                @else
+                    Admin User
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-section-label">Main Menu</div>
+
+    <ul class="sidebar-nav">
+        <li>
+            <a href="{{ route('index') }}"
+               class="sidebar-link {{ $currentRoute === 'index' ? 'active' : '' }}">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <button class="sidebar-toggle"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#customersMenu"
+                    aria-expanded="{{ str_starts_with($currentRoute ?? '', 'customers.') ? 'true' : 'false' }}">
+                <i class="fa fa-users"></i>
+                <span class="flex-grow-1">Customers</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+
+            <div class="collapse {{ str_starts_with($currentRoute ?? '', 'customers.') ? 'show' : '' }}"
+                 id="customersMenu">
+                <div class="sidebar-submenu">
+                    <a href="{{ route('customers.index') }}"
+                       class="{{ $currentRoute === 'customers.index' ? 'active' : '' }}">
+                        All Customers
+                    </a>
+                    <a href="{{ route('customers.create') }}"
+                       class="{{ $currentRoute === 'customers.create' ? 'active' : '' }}">
+                        Create Customer
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <a href="{{ route('backup.index') }}"
+               class="sidebar-link {{ str_starts_with($currentRoute ?? '', 'backup.') ? 'active' : '' }}">
+                <i class="fa fa-database"></i>
+                <span>Backup</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('report') }}"
+               class="sidebar-link {{ $currentRoute === 'report' ? 'active' : '' }}">
+                <i class="fa fa-bar-chart"></i>
+                <span>Reports</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="sidebar-section-label">Account</div>
+
+    <ul class="sidebar-nav">
+        <li>
+            <a href="{{ route('logout') }}" class="sidebar-link">
+                <i class="fa fa-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+</aside>

@@ -1,92 +1,57 @@
-<div class="top_nav">
-    <div class="nav_menu">
-        <div class="nav toggle">
-            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-        </div>
-        <nav class="nav navbar-nav">
-            <ul class=" navbar-right">
-                <li class="nav-item dropdown open" style="padding-left: 15px;">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown"
-                        data-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset($user->image) }}" alt="">{{ $user->name }}
-                    </a>
-                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="javascript:;"> Profile</a>
-                        <a class="dropdown-item" href="javascript:;">
-                            <span class="badge bg-red pull-right">50%</span>
-                            <span>Settings</span>
-                        </a>
-                        <a class="dropdown-item" href="javascript:;">Help</a>
-                        <a class="dropdown-item" href="{{ route('logout') }}"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                    </div>
-                </li>
+@php
+    $userImage = $user && !empty($user->image) ? asset($user->image) : asset('assets/backend/images/profile_av.jpg');
+@endphp
 
-               {{--  <li role="presentation" class="nav-item dropdown open">
-                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
-                        data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-green">6</span>
-                    </a>
-                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <div class="text-center">
-                                <a class="dropdown-item">
-                                    <strong>See All Alerts</strong>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </li> --}}
-            </ul>
-        </nav>
+<header class="admin-topbar">
+    <div class="h-100 px-3 px-lg-4 d-flex align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <button type="button" class="topbar-btn d-lg-none" id="sidebarToggle" aria-label="Toggle sidebar">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <div>
+                <div class="fw-bold">Dashboard</div>
+                <div class="small text-muted d-none d-sm-block">
+                    Welcome back, {{ $user->name ?? 'Admin' }}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ route('customers.create') }}" class="btn btn-gradient rounded-4 d-none d-md-inline-flex align-items-center gap-2 px-3">
+                <i class="fa fa-plus"></i>
+                <span>New Customer</span>
+            </a>
+
+            <div class="dropdown">
+                <button class="btn bg-white border rounded-4 d-flex align-items-center gap-2 px-2 px-sm-3 py-2"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <img src="{{ $userImage }}" alt="{{ $user->name ?? 'User' }}" class="user-avatar" style="width: 34px; height: 34px;">
+                    <span class="fw-bold d-none d-sm-inline">{{ $user->name ?? 'Admin' }}</span>
+                    <i class="fa fa-angle-down text-muted"></i>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-4 mt-2 p-2">
+                    <li>
+                        <a class="dropdown-item rounded-3 py-2" href="javascript:void(0);">
+                            <i class="fa fa-user me-2 text-muted"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item rounded-3 py-2" href="{{ route('backup.index') }}">
+                            <i class="fa fa-database me-2 text-muted"></i> Backup
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item rounded-3 py-2 text-danger" href="{{ route('logout') }}">
+                            <i class="fa fa-sign-out me-2"></i> Log Out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
+</header>

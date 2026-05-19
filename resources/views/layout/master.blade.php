@@ -1,137 +1,532 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-bs-theme="light">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>Shahjalal Enterprise</title>
+    <title>@yield('title', 'Shahjalal Enterprise')</title>
 
-    <link href="{{ asset('assets/admin/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
+    {{-- Bootstrap 5 --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {{-- Font Awesome --}}
     <link href="{{ asset('assets/admin/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/nprogress/nprogress.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/iCheck/skins/flat/green.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}"
-        rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/jqvmap/dist/jqvmap.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/admin/vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/admin/build/css/custom.min.css') }}" rel="stylesheet">
 
+    {{-- DataTables Bootstrap 5 --}}
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
 
-    <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    {{-- Toastr --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
-    <!-- Datatables -->
+    <style>
+        :root {
+            --app-bg: #f4f7fb;
+            --sidebar-bg: #101828;
+            --sidebar-bg-soft: #172033;
+            --sidebar-text: #d0d5dd;
+            --sidebar-muted: #98a2b3;
+            --sidebar-active: #7c3aed;
+            --card-border: #e7edf5;
+            --text-main: #101828;
+            --text-muted: #667085;
+            --primary: #7c3aed;
+            --primary-soft: rgba(124, 58, 237, .10);
+            --danger-soft: rgba(239, 68, 68, .10);
+            --success-soft: rgba(16, 185, 129, .10);
+            --warning-soft: rgba(245, 158, 11, .12);
+            --topbar-height: 72px;
+            --sidebar-width: 280px;
+        }
 
-    <link href="{{ asset('assets/admin/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}"
-        rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}"
-        rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}"
-        rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}"
-        rel="stylesheet">
-    <link href="{{ asset('assets/admin/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}"
-        rel="stylesheet">
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: var(--app-bg);
+            color: var(--text-main);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .admin-shell {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            min-height: 100vh;
+            background: linear-gradient(180deg, #111827 0%, #101828 55%, #0b1220 100%);
+            color: var(--sidebar-text);
+            position: fixed;
+            inset: 0 auto 0 0;
+            z-index: 1040;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .admin-main {
+            width: 100%;
+            min-height: 100vh;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-topbar {
+            height: var(--topbar-height);
+            background: rgba(255, 255, 255, .86);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 28px;
+        }
+
+        .admin-footer {
+            padding: 18px 28px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--card-border);
+            background: #ffffff;
+        }
+
+        .brand-card {
+            padding: 22px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            box-shadow: 0 14px 30px rgba(124, 58, 237, .28);
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .brand-subtitle {
+            color: var(--sidebar-muted);
+            font-size: 12px;
+        }
+
+        .sidebar-user {
+            margin: 18px 16px;
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .055);
+            border: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, .16);
+        }
+
+        .sidebar-section-label {
+            color: var(--sidebar-muted);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            padding: 8px 22px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0 12px 24px;
+            margin: 0;
+        }
+
+        .sidebar-link,
+        .sidebar-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--sidebar-text);
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 650;
+            transition: all .18s ease;
+            border: 0;
+            background: transparent;
+            text-align: left;
+        }
+
+        .sidebar-link i,
+        .sidebar-toggle i {
+            width: 18px;
+            text-align: center;
+            color: #a7b0c0;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-toggle:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, .075);
+        }
+
+        .sidebar-link.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(124, 58, 237, .95), rgba(236, 72, 153, .82));
+            box-shadow: 0 14px 28px rgba(124, 58, 237, .22);
+        }
+
+        .sidebar-link.active i {
+            color: #ffffff;
+        }
+
+        .sidebar-submenu {
+            padding-left: 34px;
+            margin: 4px 0 10px;
+        }
+
+        .sidebar-submenu a {
+            display: block;
+            color: var(--sidebar-muted);
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .sidebar-submenu a:hover,
+        .sidebar-submenu a.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, .07);
+        }
+
+        .topbar-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            background: #ffffff;
+            color: #344054;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topbar-btn:hover {
+            color: var(--primary);
+            border-color: rgba(124, 58, 237, .25);
+            background: var(--primary-soft);
+        }
+
+        .page-title {
+            font-weight: 850;
+            letter-spacing: -.03em;
+            color: var(--text-main);
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .modern-card {
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            background: #ffffff;
+            box-shadow: 0 12px 32px rgba(16, 24, 40, .06);
+        }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 999px;
+            right: -38px;
+            top: -40px;
+            background: var(--primary-soft);
+        }
+
+        .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 850;
+            letter-spacing: -.03em;
+        }
+
+        .transaction-card {
+            transition: all .18s ease;
+        }
+
+        .transaction-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 42px rgba(16, 24, 40, .09);
+        }
+
+        .type-badge {
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .amount-credit {
+            background: var(--success-soft);
+            color: #059669;
+        }
+
+        .amount-debit {
+            background: var(--danger-soft);
+            color: #dc2626;
+        }
+
+        .empty-state {
+            padding: 46px 24px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 14px;
+        }
+
+        .btn-gradient {
+            border: 0;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            box-shadow: 0 12px 24px rgba(124, 58, 237, .22);
+        }
+
+        .btn-gradient:hover {
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 16px 30px rgba(124, 58, 237, .28);
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 14px;
+            border-color: var(--card-border);
+            min-height: 42px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 .25rem rgba(124, 58, 237, .12);
+        }
+
+        #toast-container > div {
+            border-radius: 14px;
+            box-shadow: 0 18px 45px rgba(16, 24, 40, .16);
+            opacity: 1;
+        }
+
+        @media (max-width: 991.98px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform .2s ease;
+            }
+
+            body.sidebar-open .admin-sidebar {
+                transform: translateX(0);
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .admin-content {
+                padding: 20px 16px;
+            }
+
+            .admin-footer {
+                padding: 16px;
+            }
+
+            .mobile-sidebar-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, .52);
+                z-index: 1039;
+                display: none;
+            }
+
+            body.sidebar-open .mobile-sidebar-backdrop {
+                display: block;
+            }
+        }
+    </style>
+
     @yield('style')
     @yield('styles')
+    @stack('styles')
 </head>
 
-<body class="nav-md">
-    <div class="container body">
-        <div class="main_container">
-            @include('layout.sidebar', ['user' => Auth::user()])
+<body>
+    <div class="mobile-sidebar-backdrop" id="sidebarBackdrop"></div>
 
+    <div class="admin-shell">
+        @include('layout.sidebar', ['user' => Auth::user()])
 
-            <!-- top navigation -->
+        <main class="admin-main">
             @include('layout.top_nav', ['user' => Auth::user()])
 
-            <!-- /top navigation -->
-
-            <!-- page content -->
-            <div class="right_col" role="main">
+            <section class="admin-content">
                 @yield('content')
-            </div>
-            <!-- /page content -->
+            </section>
 
-            <!-- footer content -->
-            <footer>
-                <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+            <footer class="admin-footer">
+                <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                    <span>&copy; {{ date('Y') }} Shahjalal Enterprise. All rights reserved.</span>
+                    <span>Admin Panel</span>
                 </div>
-                <div class="clearfix"></div>
             </footer>
-            <!-- /footer content -->
-        </div>
+        </main>
     </div>
 
-    <script src="{{ asset('assets/admin/vendors/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/fastclick/lib/fastclick.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/nprogress/nprogress.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/Chart.js/dist/Chart.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/gauge.js/dist/gauge.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/iCheck/icheck.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/skycons/skycons.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/Flot/jquery.flot.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/Flot/jquery.flot.pie.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/Flot/jquery.flot.time.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/Flot/jquery.flot.stack.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/Flot/jquery.flot.resize.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/flot.orderbars/js/jquery.flot.orderBars.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/flot-spline/js/jquery.flot.spline.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/flot.curvedlines/curvedLines.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/DateJS/build/date.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/jqvmap/dist/jquery.vmap.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/moment/min/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    {{-- jQuery is used for Toastr and DataTables only --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script src="{{ asset('assets/admin/build/js/custom.min.js') }}"></script>
+    {{-- Bootstrap 5 --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    {{-- Toastr --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <!-- Datatables -->
-    <script src="{{ asset('assets/admin/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/jszip/dist/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/pdfmake/build/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/pdfmake/build/vfs_fonts.js') }}"></script>
+    {{-- DataTables Bootstrap 5 --}}
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const body = document.body;
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function () {
+                    body.classList.toggle('sidebar-open');
+                });
+            }
+
+            if (sidebarBackdrop) {
+                sidebarBackdrop.addEventListener('click', function () {
+                    body.classList.remove('sidebar-open');
+                });
+            }
+
+            document.querySelectorAll('.admin-sidebar a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth < 992) {
+                        body.classList.remove('sidebar-open');
+                    }
+                });
+            });
+        });
+
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-top-right',
+            preventDuplicates: true,
+            timeOut: 3500,
+            extendedTimeOut: 1200,
+            showDuration: 250,
+            hideDuration: 250,
+            showMethod: 'fadeIn',
+            hideMethod: 'fadeOut'
+        };
+    </script>
+
+    {{-- Laravel flash messages --}}
+    @if (session('success'))
+        <script>toastr.success(@json(session('success')));</script>
+    @endif
+
+    @if (session('error'))
+        <script>toastr.error(@json(session('error')));</script>
+    @endif
+
+    @if (session('warning'))
+        <script>toastr.warning(@json(session('warning')));</script>
+    @endif
+
+    @if (session('info'))
+        <script>toastr.info(@json(session('info')));</script>
+    @endif
+
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error(@json($error));
+            @endforeach
+        </script>
+    @endif
 
     @yield('script')
     @yield('scripts')
-
-    <script>
-
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(function() {
-                    var flashMessage = document.getElementById('flash-message');
-                    if (flashMessage) {
-                        flashMessage.style.transition = 'opacity 0.5s ease';
-                        flashMessage.style.opacity = '0';
-                        setTimeout(function() {
-                            flashMessage.remove();
-                        }, 500);
-                    }
-                }, 3000);
-            });
-    </script>
-
+    @stack('scripts')
 </body>
 
 </html>
